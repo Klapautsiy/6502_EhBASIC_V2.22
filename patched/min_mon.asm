@@ -14,7 +14,7 @@ NMI_vec     = IRQ_vec+$0A     ; NMI code vector
 
 ; setup for the 6502 simulator environment
 
-IO_AREA     = $F000           ; set I/O area for this monitor
+IO_AREA     = $FF00           ; set I/O area for this monitor
 
 ACIAsimwr   = IO_AREA+$01     ; simulated ACIA write port
 ACIAsimrd   = IO_AREA+$04     ; simulated ACIA read port
@@ -121,7 +121,10 @@ NMI_CODE
 END_CODE
 
 LAB_mess
-      .byte $0D,$0A,"6502 EhBASIC [C]old/[W]arm ?",$00
+;      .byte $0D,$0A,"6502 EhBASIC [C]old/[W]arm ?",$00
+      .byte $0D,$0A,"EhBASIC 2.22"
+      .byte $0D,$0A,"[C]old/[W]arm",$00
+
                               ; sign on string
 
 ; system vectors

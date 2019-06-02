@@ -25,7 +25,7 @@
 ; 2.22p3    fixed RAM above code / Ibuff above EhBASIC patch breaks STR$()
 ;              fix provided by github user mgcaret
 ; 2.22p4    fixed string compare of equal strings in direct mode returns FALSE
-;              fixed FALSE stored to a variable after a string compare 
+;              fixed FALSE stored to a variable after a string compare
 ;                 is > 0 and < 1E-16
 ;              added additional stack floor protection for background interrupts
 ;              fixed conditional LOOP & NEXT cannot find their data strucure on stack
@@ -91,7 +91,7 @@ ut1_ph            = ut1_pl+1  ; utility pointer 1 high byte
 ut2_pl            = $73       ; utility pointer 2 low byte
 ut2_ph            = ut2_pl+1  ; utility pointer 2 high byte
 
-Temp_2            = ut1_pl    ; temp byte for block move    
+Temp_2            = ut1_pl    ; temp byte for block move
 
 FACt_1            = $75       ; FAC temp mantissa1
 FACt_2            = FACt_1+1  ; FAC temp mantissa2
@@ -458,13 +458,13 @@ Ibuffs            = VEC_SV+$16
 Ibuffe            = Ibuffs+$47; end of input buffer
 
 Ram_base          = $0300     ; start of user RAM (set as needed, should be page aligned)
-Ram_top           = $C000     ; end of user RAM+1 (set as needed, should be page aligned)
+Ram_top           = $D600     ; end of user RAM+1 (set as needed, should be page aligned)
 
 Stack_floor       = 16        ; bytes left free on stack for background interrupts
 
 ; This start can be changed to suit your system
 
-      *=    $C000
+      *=    $D600
 
 ; BASIC cold start entry point
 
@@ -3313,7 +3313,7 @@ LAB_1C25
 ; *** begin patch  string pointer high byte trashed when moved to stack
 ; *** add
       LSR   FAC1_r            ; clear bit 7 (<$80) = do not round up
-; *** end patch 
+; *** end patch
       RTS
 
 ; get value from line .. continued
@@ -4477,7 +4477,7 @@ LAB_20DC
       BEQ   LAB_MVST          ; fix STR$() using page zero via LAB_296E
       CMP   #>Ibuffs          ; compare with location of input buffer page
       BNE   LAB_RTST          ; branch if not in utility area
-LAB_MVST      
+LAB_MVST
 ; *** end   RAM above code / Ibuff above EhBASIC patch V2 ***
 
                               ; string in utility area, move to string memory
@@ -6370,7 +6370,7 @@ LAB_28C9
       BIT   expneg            ; test exponent -ve flag
       BPL   LAB_28DB          ; if +ve go evaluate exponent
 
-                              ; else do exponent = -exponent 
+                              ; else do exponent = -exponent
       LDA   #$00              ; clear result
       SEC                     ; set carry for subtract
       SBC   expcnt            ; subtract exponent byte
@@ -6603,7 +6603,7 @@ LAB_29F5
       STY   Sendl             ; save output string index
 LAB_29F7
       LDY   #$00              ; clear index (point to 100,000)
-      LDX   #$80              ; 
+      LDX   #$80              ;
 LAB_29FB
       LDA   FAC1_3            ; get FAC1 mantissa3
       CLC                     ; clear carry for add
@@ -6615,22 +6615,22 @@ LAB_29FB
       LDA   FAC1_1            ; get FAC1 mantissa1
       ADC   LAB_2A9A,Y        ; add -ve MSB
       STA   FAC1_1            ; save FAC1 mantissa1
-      INX                     ; 
-      BCS   LAB_2A18          ; 
+      INX                     ;
+      BCS   LAB_2A18          ;
 
       BPL   LAB_29FB          ; not -ve so try again
 
-      BMI   LAB_2A1A          ; 
+      BMI   LAB_2A1A          ;
 
 LAB_2A18
-      BMI   LAB_29FB          ; 
+      BMI   LAB_29FB          ;
 
 LAB_2A1A
-      TXA                     ; 
-      BCC   LAB_2A21          ; 
+      TXA                     ;
+      BCC   LAB_2A21          ;
 
-      EOR   #$FF              ; 
-      ADC   #$0A              ; 
+      EOR   #$FF              ;
+      ADC   #$0A              ;
 LAB_2A21
       ADC   #'0'-1            ; add "0"-1 to result
       INY                     ; increment index ..
@@ -6653,9 +6653,9 @@ LAB_2A3B
       STY   Sendl             ; save output string index
       LDY   Cvaral            ; get current var address low byte
       TXA                     ; get character back
-      EOR   #$FF              ; 
-      AND   #$80              ; 
-      TAX                     ; 
+      EOR   #$FF              ;
+      AND   #$80              ;
+      TAX                     ;
       CPY   #$12              ; compare index with max
       BNE   LAB_29FB          ; loop if not max
 
@@ -7155,7 +7155,7 @@ NextB1
       BEQ   GoPr2             ; if zero print whole string
 
       BNE   GoPr1             ; else go make output string
-      
+
 ; this is the exit code and is also used by HEX$()
 ; truncate string to remove leading "0"s
 
@@ -7879,9 +7879,9 @@ StrTab
       .word LAB_COLD          ; initial warm start vector (cold start)
 
       .byte $00               ; these bytes are not used by BASIC
-      .word $0000             ; 
-      .word $0000             ; 
-      .word $0000             ; 
+      .word $0000             ;
+      .word $0000             ;
+      .word $0000             ;
 
       .byte $4C               ; JMP opcode
       .word LAB_FCER          ; initial user function vector ("Function call" error)
@@ -7896,8 +7896,8 @@ LAB_MSZM
       .byte $0D,$0A,"Memory size ",$00
 
 LAB_SMSG
-      .byte " Bytes free",$0D,$0A,$0A
-      .byte "Enhanced BASIC 2.22p4",$0A,$00
+      .byte " Bytes free",$0D,$0A,$00
+;      .byte "Enhanced BASIC 2.22p4",$0A,$00
 
 ; numeric constants and series
 
@@ -8781,7 +8781,8 @@ ERR_LD      .byte "LOOP without DO",$00
 LAB_BMSG    .byte $0D,$0A,"Break",$00
 LAB_EMSG    .byte " Error",$00
 LAB_LMSG    .byte " in line ",$00
-LAB_RMSG    .byte $0D,$0A,"Ready",$0D,$0A,$00
+;LAB_RMSG    .byte $0D,$0A,"Ready",$0D,$0A,$00
+LAB_RMSG    .byte $0D,$0A,$00
 
 LAB_IMSG    .byte " Extra ignored",$0D,$0A,$00
 LAB_REDO    .byte " Redo from start",$0D,$0A,$00
